@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Savvy CTG SAS | Repuestos y Accesorios</title>
+    <style>
+        :root {
+            --negro: #0a0a0a;
+            --negro-suave: #1a1a1a;
+            --gris-oscuro: #2a2a2a;
+            --gris-medio: #4a4a4a;
+            --gris-claro: #888888;
+            --gris-borde: #333333;
+            --blanco: #f5f5f5;
+            --blanco-puro: #ffffff;
+            --acento: #c0c0c0;
+            --whatsapp: #25d366;
+            --error: #e74c3c;
+            --transicion: 0.3s ease;
+            --borde-radius: 12px;
+            --fuente: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--fuente); background: var(--negro); color: var(--blanco); line-height: 1.6; }
+
+        /* LOGIN OVERLAY (conservado) */
+        .login-overlay {
+            position: fixed; inset: 0; z-index: 10000; background: radial-gradient(ellipse at center, #1a1a1a 0%, #050505 100%);
+            display: flex; align-items: center; justify-content: center; transition: opacity 0.6s, visibility 0.6s;
+            opacity: 1; visibility: visible;
+        }
+        .login-overlay.oculto { opacity: 0; visibility: hidden; pointer-events: none; }
+        .login-particulas { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .login-particulas span {
+            position: absolute; width: 2px; height: 2px; background: rgba(255,255,255,0.2);
+            border-radius: 50%; animation: flotar linear infinite;
+        }
+        @keyframes flotar { 0%{transform:translateY(100vh) scale(0);opacity:0;} 10%{opacity:1;} 80%{opacity:0.5;} 100%{transform:translateY(-10vh) scale(1.4);opacity:0;} }
+        .login-contenedor {
+            position: relative; z-index: 2; background: rgba(20,20,20,0.9); backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 50px 40px 40px;
+            width: 90%; max-width: 420px; box-shadow: 0 20px 50px rgba(0,0,0,0.7); text-align: center;
+            animation: entradaLogin 0.7s cubic-bezier(0.22,1,0.36,1);
+        }
+        @keyframes entradaLogin { 0%{transform:scale(0.92);opacity:0;} 100%{transform:scale(1);opacity:1;} }
+        .login-logo { width: 80px; height: 80px; margin: 0 auto 20px; background: linear-gradient(145deg,#1a1a1a,#0d0d0d); border:2px solid rgba(255,255,255,0.2); border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:2rem; font-weight:900; color:var(--acento); }
+        .login-titulo { font-size: 1.4rem; font-weight: 700; color: var(--blanco-puro); }
+        .login-subtitulo { font-size: 0.75rem; color: var(--gris-claro); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; }
+        .login-grupo { position: relative; margin-bottom: 16px; text-align: left; }
+        .login-grupo label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gris-claro); margin-bottom: 5px; font-weight: 600; }
+        .login-grupo input { width: 100%; padding: 14px 40px 14px 16px; background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); border-radius:6px; color:var(--blanco-puro); font-size:0.9rem; outline:none; transition:0.3s; }
+        .login-grupo input:focus { border-color:rgba(255,255,255,0.4); background:rgba(255,255,255,0.08); }
+        .login-grupo .icono-input { position: absolute; right: 14px; bottom: 14px; color: rgba(255,255,255,0.3); }
+        .login-error { color: var(--error); font-size: 0.7rem; min-height: 18px; margin-top: 2px; }
+        .btn-login { width: 100%; padding: 14px; background: var(--blanco-puro); color: var(--negro); border: none; border-radius: 30px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: 0.3s; margin-top: 6px; }
+        .btn-login:hover { background: var(--acento); transform: translateY(-2px); }
+        .login-footer-texto { margin-top: 20px; font-size: 0.65rem; color: rgba(255,255,255,0.25); }
+
+        /* CONTENIDO PRINCIPAL */
+        .contenido-principal { opacity: 0; transition: opacity 0.5s 0.2s; }
+        .contenido-principal.visible { opacity: 1; }
+
+        /* HEADER */
+        .header { position: sticky; top: 0; z-index: 900; background: rgba(10,10,10,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--gris-borde); }
+        .header-contenido { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 20px; }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-icono { width: 42px; height: 42px; background: #1c1c1c; border: 2px solid #444; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--acento); font-size: 1.2rem; }
+        .logo-texto { font-weight: 700; color: var(--blanco-puro); font-size: 1.05rem; line-height: 1.2; }
+        .logo-texto span { display: block; font-size: 0.65rem; color: var(--gris-claro); letter-spacing: 1.8px; }
+        .nav-links { display: flex; gap: 24px; list-style: none; align-items: center; flex-wrap: wrap; }
+        .nav-links a { text-decoration: none; color: var(--gris-claro); font-weight: 500; font-size: 0.85rem; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--blanco-puro); }
+        .btn-cerrar-sesion { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--gris-claro); padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.75rem; transition: 0.3s; }
+        .btn-cerrar-sesion:hover { border-color: var(--error); color: var(--error); }
+        .btn-carrito-header { background: var(--gris-oscuro); border: 1px solid var(--gris-borde); color: var(--blanco); padding: 8px 16px; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
+        .badge-carrito { background: var(--acento); color: var(--negro); font-size: 0.7rem; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .menu-movil { display: none; background: none; border: none; color: var(--blanco); font-size: 1.7rem; cursor: pointer; }
+
+        /* HERO */
+        .hero { position: relative; min-height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; background: url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=1600&q=80') center/cover; background-attachment: fixed; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.9) 100%); z-index: 1; }
+        .hero-contenido { position: relative; z-index: 2; max-width: 800px; padding: 40px 24px; }
+        .hero-badge { display: inline-block; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); padding: 8px 18px; border-radius: 30px; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--acento); margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 800; color: var(--blanco-puro); line-height: 1.15; }
+        .hero h1 span { color: var(--acento); }
+        .hero p { color: var(--gris-claro); margin: 14px auto 30px; max-width: 520px; font-size: 1.1rem; }
+        .btn-primario { background: var(--blanco-puro); color: var(--negro); padding: 14px 28px; border-radius: 30px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-primario:hover { background: var(--acento); transform: translateY(-2px); }
+
+        /* SECCIONES */
+        .seccion { padding: 70px 24px; max-width: 1300px; margin: 0 auto; }
+        .seccion-titulo { text-align: center; margin-bottom: 50px; }
+        .seccion-titulo h2 { font-size: 2.2rem; font-weight: 700; }
+        .linea { width: 50px; height: 3px; background: var(--acento); margin: 10px auto 0; }
+
+        /* TABS CATEGORÍAS */
+        .tabs-categorias { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 36px; }
+        .tab-categoria { padding: 10px 20px; border-radius: 30px; border: 1px solid var(--gris-borde); background: transparent; color: var(--gris-claro); cursor: pointer; font-weight: 500; font-size: 0.85rem; transition: 0.3s; }
+        .tab-categoria:hover, .tab-categoria.activo { background: var(--blanco-puro); color: var(--negro); border-color: var(--blanco-puro); font-weight: 700; }
+
+        /* GRID PRODUCTOS */
+        .productos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 22px; }
+        .producto-card { background: var(--negro-suave); border: 1px solid var(--gris-borde); border-radius: var(--borde-radius); overflow: hidden; transition: 0.3s; position: relative; }
+        .producto-card:hover { border-color: var(--gris-medio); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
+        .producto-img { width: 100%; height: 190px; object-fit: cover; background: var(--gris-oscuro); }
+        .producto-body { padding: 16px; }
+        .producto-categoria { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--acento); margin-bottom: 4px; }
+        .producto-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+        .producto-descripcion { font-size: 0.78rem; color: var(--gris-claro); margin-bottom: 8px; }
+        .producto-precio { font-size: 1.2rem; font-weight: 700; }
+        .btn-agregar { width: 100%; padding: 10px; background: var(--gris-oscuro); border: 1px solid var(--gris-borde); color: var(--blanco); border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.85rem; margin-top: 8px; transition: 0.3s; }
+        .btn-agregar:hover { background: var(--blanco-puro); color: var(--negro); }
+        .badge-prioridad { position: absolute; top: 10px; left: 10px; background: #e6b800; color: #000; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; z-index: 2; }
+
+        /* EMPRESA INFO */
+        .empresa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: var(--negro-suave); border: 1px solid var(--gris-borde); border-radius: var(--borde-radius); padding: 40px; }
+        .empresa-logo-grande { width: 90px; height: 90px; background: linear-gradient(135deg, #1e1e1e, #0a0a0a); border: 3px solid var(--gris-medio); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: var(--acento); font-weight: 900; margin-bottom: 14px; }
+        .empresa-info h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+        .historia { color: var(--gris-claro); margin-bottom: 16px; font-size: 0.9rem; line-height: 1.7; }
+        .horarios { background: var(--negro); border-radius: var(--borde-radius-sm); padding: 16px 20px; border: 1px solid var(--gris-borde); }
+        .horarios h4 { font-size: 0.82rem; letter-spacing: 1px; text-transform: uppercase; color: var(--acento); margin-bottom: 8px; }
+        .empresa-imagen { width: 100%; height: 280px; object-fit: cover; border-radius: var(--borde-radius); }
+
+        /* CARRITO LATERAL */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 999; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .overlay.activo { opacity: 1; visibility: visible; }
+        .carrito-panel { position: fixed; top: 0; right: -440px; width: 100%; max-width: 420px; height: 100vh; background: var(--negro-suave); z-index: 1000; transition: right 0.3s; box-shadow: -10px 0 30px rgba(0,0,0,0.7); display: flex; flex-direction: column; }
+        .carrito-panel.activo { right: 0; }
+        .carrito-header, .carrito-footer { padding: 16px 20px; background: var(--negro); }
+        .carrito-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--gris-borde); }
+        .carrito-items { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .item-carrito { display: flex; gap: 10px; background: var(--gris-oscuro); padding: 10px; border-radius: 8px; align-items: center; }
+        .item-carrito img { width: 50px; height: 50px; border-radius: 4px; object-fit: cover; }
+        .carrito-total { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 12px; }
+        .btn-whatsapp-carrito { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--whatsapp); color: #fff; padding: 12px; border-radius: 30px; text-decoration: none; font-weight: 700; }
+
+        /* MODAL PAGO */
+        .modal-pago { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1100; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-pago.activo { opacity: 1; visibility: visible; }
+        .modal-contenido { background: #111; border: 1px solid #333; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px; }
+        .opcion-pago { display: block; width: 100%; background: var(--gris-oscuro); border: 1px solid #333; padding: 12px; margin: 8px 0; border-radius: 8px; cursor: pointer; text-align: left; color: #fff; transition: 0.2s; }
+        .opcion-pago:hover, .opcion-pago.seleccionado { border-color: var(--acento); background: #222; }
+
+        /* BOT IA */
+        .bot-flotante { position: fixed; bottom: 20px; left: 20px; z-index: 950; width: 55px; height: 55px; background: linear-gradient(135deg, #3a3a3a, #111); border: 2px solid #555; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.6); animation: botPulse 2s infinite; }
+        .bot-flotante span { font-size: 1.8rem; }
+        @keyframes botPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+        .chat-bot { position: fixed; bottom: 90px; left: 20px; width: 320px; height: 400px; background: #0f0f0f; border: 1px solid #333; border-radius: 16px; z-index: 951; display: flex; flex-direction: column; opacity: 0; visibility: hidden; transition: 0.3s; box-shadow: 0 8px 30px rgba(0,0,0,0.8); }
+        .chat-bot.activo { opacity: 1; visibility: visible; }
+        .chat-mensajes { flex: 1; overflow-y: auto; padding: 12px; font-size: 0.8rem; }
+        .chat-mensajes .msg { margin: 6px 0; padding: 8px 12px; border-radius: 12px; max-width: 80%; }
+        .msg.bot { background: #1a1a1a; color: #ccc; }
+        .msg.user { background: var(--gris-medio); margin-left: auto; color: #fff; }
+        .chat-input { display: flex; padding: 8px; border-top: 1px solid #333; }
+        .chat-input input { flex: 1; background: #111; border: 1px solid #333; padding: 8px; border-radius: 20px; color: #fff; }
+        .chat-input button { background: var(--acento); border: none; padding: 8px 14px; border-radius: 20px; margin-left: 6px; cursor: pointer; font-weight: 700; }
+
+        .whatsapp-flotante { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 950; }
+
+        @media (max-width: 900px) {
+            .empresa-grid { grid-template-columns: 1fr; padding: 24px; }
+            .empresa-imagen { height: 200px; order: -1; }
+            .nav-links { display: none; }
+            .menu-movil { display: block; }
+            .nav-links.movil-activo { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,10,10,0.97); padding: 20px; }
+            .hero { min-height: 65vh; background-attachment: scroll; }
+            .carrito-panel { max-width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- PANTALLA DE ACCESO (LOGIN) -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-particulas" id="loginParticulas"></div>
+        <div class="login-contenedor">
+            <div class="login-logo">TS</div>
+            <h2 class="login-titulo">Tech Savvy CTG</h2>
+            <p class="login-subtitulo">Plataforma de Repuestos</p>
+            <form id="loginForm" autocomplete="off">
+                <div class="login-grupo">
+                    <label>Usuario</label>
+                    <input type="text" id="usuario" placeholder="Ingresa tu usuario" required>
+                    <span class="icono-input">👤</span>
+                </div>
+                <div class="login-grupo">
+                    <label>Contraseña</label>
+                    <input type="password" id="contrasena" placeholder="••••••••" required>
+                    <span class="icono-input">🔒</span>
+                </div>
+                <div class="login-error" id="loginError"></div>
+                <button type="submit" class="btn-login">Ingresar a la Plataforma</button>
+            </form>
+            <p class="login-footer-texto">Acceso exclusivo <span style="color:var(--acento);">Tech Savvy CTG SAS</span></p>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="contenido-principal" id="contenidoPrincipal">
+        <header class="header">
+            <div class="header-contenido">
+                <a href="#" class="logo">
+                    <div class="logo-icono">TS</div>
+                    <div class="logo-texto">Tech Savvy CTG <span>SAS</span></div>
+                </a>
+                <nav>
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="#hero">Inicio</a></li>
+                        <li><a href="#productos">Productos</a></li>
+                        <li><a href="#empresa">Nosotros</a></li>
+                        <li><a href="#servicios">Servicios</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </nav>
+                <button class="btn-carrito-header" id="btnAbrirCarrito">🛒 Carrito <span class="badge-carrito" id="badgeCarrito">0</span></button>
+                <button class="btn-cerrar-sesion" id="btnCerrarSesion">Salir</button>
+                <button class="menu-movil" id="btnMenuMovil">☰</button>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero" id="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-contenido">
+                <div class="hero-badge">⚡ Tecnología de Confianza</div>
+                <h1>Repuestos <span>Premium</span> para Celulares & Consolas</h1>
+                <p>La más amplia selección de repuestos, accesorios y kits de herramientas.</p>
+                <div>
+                    <a href="#productos" class="btn-primario">🔧 Ver Productos</a>
+                    <a href="https://wa.me/57000000" class="btn-primario" style="background:transparent; border:2px solid #fff; color:#fff; margin-left:10px;">💬 Pedir por WhatsApp</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCTOS -->
+        <section class="seccion" id="productos">
+            <div class="seccion-titulo">
+                <h2>Nuestro Catálogo</h2>
+                <div class="linea"></div>
+            </div>
+            <div class="tabs-categorias" id="tabsCategorias">
+                <button class="tab-categoria activo" data-cat="todos">Todos</button>
+                <button class="tab-categoria" data-cat="repuestos-celulares">Repuestos Celulares</button>
+                <button class="tab-categoria" data-cat="repuestos-consolas">Repuestos Consolas</button>
+                <button class="tab-categoria" data-cat="accesorios">Accesorios</button>
+                <button class="tab-categoria" data-cat="kits">Kits de Herramientas</button>
+            </div>
+            <div class="productos-grid" id="productosGrid"></div>
+        </section>
+
+        <!-- EMPRESA -->
+        <section class="seccion" id="empresa">
+            <div class="seccion-titulo"><h2>Quiénes Somos</h2><div class="linea"></div></div>
+            <div class="empresa-grid">
+                <div class="empresa-info">
+                    <div class="empresa-logo-grande">TS</div>
+                    <h3>Tech Savvy CTG SAS</h3>
+                    <p class="historia">Nacimos en Cartagena con una misión clara: ofrecer repuestos y accesorios de la más alta calidad para el mundo de la telefonía móvil y los videojuegos. Desde 2018, nos hemos consolidado como un referente en el sector.</p>
+                    <div class="horarios">
+                        <h4>🕐 Horarios de Atención</h4>
+                        <p><strong>Lunes a Viernes:</strong> 8:00 AM – 6:00 PM</p>
+                        <p><strong>Sábados:</strong> 9:00 AM – 2:00 PM</p>
+                        <p><strong>Domingos y festivos:</strong> Cerrado</p>
+                        <p style="margin-top:6px;">📍 Cartagena de Indias, Colombia</p>
+                    </div>
+                </div>
+                <img src="https://images.unsplash.com/photo-1603792907191-89e55f70099a?w=800&q=80" alt="Taller Tech Savvy CTG" class="empresa-imagen">
+            </div>
+        </section>
+
+        <!-- SERVICIOS -->
+        <section class="seccion" id="servicios">
+            <div class="seccion-titulo"><h2>Servicios Especializados</h2><div class="linea"></div></div>
+            <div class="productos-grid" id="serviciosGrid"></div>
+        </section>
+
+        <!-- CONTACTO -->
+        <section class="seccion" id="contacto" style="text-align:center;">
+            <div class="seccion-titulo"><h2>¿Listo para tu pedido?</h2><div class="linea"></div></div>
+            <a href="https://wa.me/57000000" class="btn-primario" style="font-size:1.1rem;">💬 Pedir por WhatsApp Ahora</a>
+        </section>
+
+        <footer style="background:var(--negro-suave); text-align:center; padding:20px; border-top:1px solid var(--gris-borde);">
+            <p>&copy; 2024 Tech Savvy CTG SAS - Cartagena, Colombia</p>
+        </footer>
+    </div>
+
+    <!-- CARRITO -->
+    <div class="overlay" id="overlayCarrito"></div>
+    <div class="carrito-panel" id="carritoPanel">
+        <div class="carrito-header"><h3>🛒 Tu Carrito <span id="carritoContadorPanel">0</span></h3><button id="btnCerrarCarrito">✕</button></div>
+        <div class="carrito-items" id="carritoItems"></div>
+        <div class="carrito-footer">
+            <div class="carrito-total"><span>Total:</span> <span id="carritoTotal">$0</span></div>
+            <button class="btn-agregar" id="btnFinalizarCompra" style="background:var(--whatsapp); color:#fff;">💳 Finalizar Compra</button>
+        </div>
+    </div>
+
+    <!-- MODAL PAGO -->
+    <div class="modal-pago" id="modalPago">
+        <div class="modal-contenido">
+            <h3>Selecciona método de pago</h3>
+            <button class="opcion-pago" data-metodo="Transferencia Bancaria">🏦 Transferencia Bancaria</button>
+            <button class="opcion-pago" data-metodo="Efectivo contra entrega">💵 Efectivo contra entrega</button>
+            <button class="opcion-pago" data-metodo="Datafono al recibir">📱 Datafono al recibir</button>
+            <button id="btnCancelarPago" style="background:transparent; border:1px solid #555; color:#aaa; width:100%; padding:10px; border-radius:20px; margin-top:8px;">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- BOT ASISTENTE IA -->
+    <div class="bot-flotante" id="btnBot"><span>🤖</span></div>
+    <div class="chat-bot" id="chatBot">
+        <div class="chat-mensajes" id="chatMensajes"></div>
+        <div class="chat-input"><input type="text" id="inputChat" placeholder="Escribe tu consulta..."><button id="btnEnviarChat">➤</button></div>
+    </div>
+
+    <a href="https://wa.me/57000000" class="whatsapp-flotante" target="_blank">💬</a>
+
+    <script>
+        (function() {
+            // 50 PRODUCTOS (con prioridad en algunos)
+            const productos = [
+                { id:1, nombre:'Pantalla iPhone 13 Pro Max OLED', precio:280000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400', prioridad:true },
+                { id:2, nombre:'Batería Samsung S23 Ultra', precio:85000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400', prioridad:true },
+                { id:3, nombre:'Flex Carga iPhone 14', precio:45000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400' },
+                { id:4, nombre:'Tapa Posterior Xiaomi Note 12', precio:32000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400' },
+                { id:5, nombre:'Cámara iPhone 12', precio:65000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400' },
+                { id:6, nombre:'Pantalla Samsung A54', precio:95000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400' },
+                { id:7, nombre:'Batería iPhone 11', precio:40000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400' },
+                { id:8, nombre:'Flex Volumen Moto G60', precio:18000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400' },
+                { id:9, nombre:'Vidrio Cámara Redmi Note 11', precio:12000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400' },
+                { id:10, nombre:'Pantalla iPhone XR', precio:75000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400', prioridad:true },
+                { id:11, nombre:'Joystick PS5 Hall Effect', precio:38000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=400', prioridad:true },
+                { id:12, nombre:'Ventilador Xbox Series X', precio:65000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=400' },
+                { id:13, nombre:'Pantalla LCD Nintendo Switch', precio:120000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=400', prioridad:true },
+                { id:14, nombre:'Flex HDMI PS5', precio:55000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=400' },
+                { id:15, nombre:'Batería Mando Xbox', precio:25000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=400' },
+                { id:16, nombre:'Kit Botones PS5', precio:18000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=400' },
+                { id:17, nombre:'Lector Discos Xbox One', precio:85000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=400' },
+                { id:18, nombre:'Carcasa Switch Lite', precio:28000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=400' },
+                { id:19, nombre:'Pantalla PS5 Edge', precio:200000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=400' },
+                { id:20, nombre:'Gatillos Magnéticos PS5', precio:48000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=400' },
+                { id:21, nombre:'Cargador 65W GaN', precio:55000, cat:'accesorios', img:'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400', prioridad:true },
+                { id:22, nombre:'Audífonos TWS ANC', precio:78000, cat:'accesorios', img:'https://images.unsplash.com/photo-1590658268037-6bf12f032f4e?w=400' },
+                { id:23, nombre:'Funda Magnética MagSafe', precio:28000, cat:'accesorios', img:'https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?w=400' },
+                { id:24, nombre:'Cable HDMI 2.1 8K', precio:42000, cat:'accesorios', img:'https://images.unsplash.com/photo-1623944889288-cd1476d02e71?w=400' },
+                { id:25, nombre:'Base Carga Mandos PS5', precio:35000, cat:'accesorios', img:'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400' },
+                { id:26, nombre:'Protector Pantalla Universal', precio:8000, cat:'accesorios', img:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400' },
+                { id:27, nombre:'Soporte Celular Cama', precio:15000, cat:'accesorios', img:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400' },
+                { id:28, nombre:'Hub USB-C 7 en 1', precio:65000, cat:'accesorios', img:'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400' },
+                { id:29, nombre:'Memoria MicroSD 256GB', precio:48000, cat:'accesorios', img:'https://images.unsplash.com/photo-1623944889288-cd1476d02e71?w=400' },
+                { id:30, nombre:'Cable Lightning 2m', precio:15000, cat:'accesorios', img:'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=400' },
+                { id:31, nombre:'Kit 42 piezas Celulares', precio:68000, cat:'kits', img:'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=400', prioridad:true },
+                { id:32, nombre:'Kit Precisión Multímetro', precio:95000, cat:'kits', img:'https://images.unsplash.com/photo-1605152276897-4f618f4f8f14?w=400' },
+                { id:33, nombre:'Kit Destornilladores Consolas', precio:52000, cat:'kits', img:'https://images.unsplash.com/photo-1581147036324-c1c9e5a2b2a7?w=400' },
+                { id:34, nombre:'Kit Profesional Consolas', precio:140000, cat:'kits', img:'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=400' },
+                { id:35, nombre:'Kit Soldadura Básico', precio:35000, cat:'kits', img:'https://images.unsplash.com/photo-1605152276897-4f618f4f8f14?w=400' },
+                { id:36, nombre:'Pasta Térmica Premium', precio:12000, cat:'kits', img:'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=400' },
+                { id:37, nombre:'Cinta Adhesiva Tesa', precio:8000, cat:'kits', img:'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=400' },
+                { id:38, nombre:'Pinzas Anti-estáticas', precio:15000, cat:'kits', img:'https://images.unsplash.com/photo-1581147036324-c1c9e5a2b2a7?w=400' },
+                { id:39, nombre:'Espátulas Apertura 10pcs', precio:10000, cat:'kits', img:'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=400' },
+                { id:40, nombre:'Multímetro Digital', precio:28000, cat:'kits', img:'https://images.unsplash.com/photo-1605152276897-4f618f4f8f14?w=400' },
+                { id:41, nombre:'Pantalla OnePlus Nord', precio:80000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400' },
+                { id:42, nombre:'Batería Xiaomi Poco X3', precio:30000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1563770660941-20978e870e26?w=400' },
+                { id:43, nombre:'Tapa Trasera iPhone 12', precio:22000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400' },
+                { id:44, nombre:'Flex Cargador USB-C', precio:12000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=400' },
+                { id:45, nombre:'Lente Cámara Samsung S22', precio:28000, cat:'repuestos-celulares', img:'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400' },
+                { id:46, nombre:'Pantalla Switch OLED', precio:180000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=400' },
+                { id:47, nombre:'Disipador Xbox Series S', precio:38000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=400' },
+                { id:48, nombre:'Cable Flex Joy-Con', precio:15000, cat:'repuestos-consolas', img:'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=400' },
+                { id:49, nombre:'Estuche Rígido Switch', precio:22000, cat:'accesorios', img:'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400' },
+                { id:50, nombre:'Cámara Térmica Smartphone', precio:160000, cat:'kits', img:'https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=400' }
+            ];
+
+            const servicios = [
+                { nombre:'Cambio de Pantalla', precio:'Desde $45.000', desc:'Reemplazo profesional con garantía.' },
+                { nombre:'Cambio de Batería', precio:'Desde $35.000', desc:'Baterías originales y genéricas.' },
+                { nombre:'Reparación de Consolas', precio:'Desde $60.000', desc:'PS4, PS5, Xbox, Switch.' },
+                { nombre:'Mantenimiento Preventivo', precio:'Desde $25.000', desc:'Limpieza y optimización.' }
+            ];
+
+            // CARRITO
+            let carrito = JSON.parse(localStorage.getItem('carrito_tech')) || [];
+            function guardar() { localStorage.setItem('carrito_tech', JSON.stringify(carrito)); }
+            function total() { return carrito.reduce((t,i)=>t+(i.precio*i.cantidad),0); }
+            function cantTotal() { return carrito.reduce((t,i)=>t+i.cantidad,0); }
+            function formatear(v) { return '$'+v.toLocaleString('es-CO'); }
+
+            function actualizarCarritoUI() {
+                document.getElementById('badgeCarrito').textContent = cantTotal();
+                document.getElementById('carritoContadorPanel').textContent = cantTotal();
+                document.getElementById('carritoTotal').textContent = formatear(total());
+                const items = document.getElementById('carritoItems');
+                if(!carrito.length) items.innerHTML = '<p style="padding:20px; text-align:center;">Carrito vacío</p>';
+                else items.innerHTML = carrito.map(i=>`
+                    <div class="item-carrito">
+                        <img src="${i.img}" onerror="this.src='https://via.placeholder.com/50'">
+                        <div style="flex:1;"><strong>${i.nombre}</strong><br>${formatear(i.precio)} x${i.cantidad}</div>
+                        <button onclick="eliminarItem(${i.id})" style="background:none; border:none; color:var(--error); cursor:pointer;">🗑️</button>
+                    </div>`).join('');
+            }
+            window.eliminarItem = (id) => { carrito = carrito.filter(i=>i.id!==id); guardar(); actualizarCarritoUI(); };
+
+            function agregarAlCarrito(id) {
+                const p = productos.find(x=>x.id===id);
+                const existe = carrito.find(i=>i.id===id);
+                if(existe) existe.cantidad++; else carrito.push({...p, cantidad:1});
+                guardar(); actualizarCarritoUI();
+            }
+
+            // CARRITO PANEL
+            const panel = document.getElementById('carritoPanel'), overlay = document.getElementById('overlayCarrito');
+            document.getElementById('btnAbrirCarrito').onclick = ()=>{ panel.classList.add('activo'); overlay.classList.add('activo'); };
+            document.getElementById('btnCerrarCarrito').onclick = ()=>{ panel.classList.remove('activo'); overlay.classList.remove('activo'); };
+            overlay.onclick = ()=>{ panel.classList.remove('activo'); overlay.classList.remove('activo'); };
+
+            // MODAL PAGO
+            document.getElementById('btnFinalizarCompra').addEventListener('click', ()=>{
+                if(carrito.length===0) return alert('Agrega productos al carrito.');
+                document.getElementById('modalPago').classList.add('activo');
+            });
+            document.getElementById('btnCancelarPago').onclick = ()=> document.getElementById('modalPago').classList.remove('activo');
+            document.querySelectorAll('.opcion-pago').forEach(btn=>{
+                btn.addEventListener('click', function(){
+                    document.querySelectorAll('.opcion-pago').forEach(b=>b.classList.remove('seleccionado'));
+                    this.classList.add('seleccionado');
+                    const metodo = this.dataset.metodo;
+                    const mensaje = `🛒 *Pedido Tech Savvy CTG*\n${carrito.map(i=>`- ${i.nombre} x${i.cantidad} = ${formatear(i.precio*i.cantidad)}`).join('\n')}\nTotal: ${formatear(total())}\n\n💳 *Pago:* ${metodo}`;
+                    window.open(`https://wa.me/57000000?text=${encodeURIComponent(mensaje)}`, '_blank');
+                    document.getElementById('modalPago').classList.remove('activo');
+                });
+            });
+
+            // FILTRO DE CATEGORÍAS
+            let catActiva = 'todos';
+            function renderizarProductos(cat) {
+                catActiva = cat;
+                const filtrados = cat==='todos' ? productos : productos.filter(p=>p.cat===cat);
+                document.getElementById('productosGrid').innerHTML = filtrados.map(p=>`
+                    <div class="producto-card">
+                        ${p.prioridad ? '<span class="badge-prioridad">🔥 Más pedido</span>' : ''}
+                        <img src="${p.img}" class="producto-img" onerror="this.src='https://via.placeholder.com/300'">
+                        <div class="producto-body">
+                            <div class="producto-categoria">${p.cat.replace(/-/g,' ')}</div>
+                            <h3>${p.nombre}</h3>
+                            <div class="producto-precio">${formatear(p.precio)}</div>
+                            <button class="btn-agregar" data-id="${p.id}">🛒 Agregar</button>
+                        </div>
+                    </div>`).join('');
+            }
+            document.getElementById('tabsCategorias').addEventListener('click', function(e) {
+                if(e.target.classList.contains('tab-categoria')) {
+                    document.querySelectorAll('.tab-categoria').forEach(t=>t.classList.remove('activo'));
+                    e.target.classList.add('activo');
+                    renderizarProductos(e.target.dataset.cat);
+                }
+            });
+            document.body.addEventListener('click', function(e) {
+                if(e.target.classList.contains('btn-agregar') && e.target.dataset.id) {
+                    agregarAlCarrito(parseInt(e.target.dataset.id));
+                }
+            });
+
+            // SERVICIOS
+            document.getElementById('serviciosGrid').innerHTML = servicios.map(s=>`
+                <div class="producto-card"><div class="producto-body">
+                    <h3>🔧 ${s.nombre}</h3><p>${s.desc}</p>
+                    <div class="producto-precio">${s.precio}</div>
+                    <a href="https://wa.me/57000000" class="btn-agregar" style="display:block; text-align:center; text-decoration:none;">💬 Consultar</a>
+                </div></div>`).join('');
+
+            // BOT IA
+            const respuestas = {
+                'hola':'¡Hola! Soy el asistente virtual de Tech Savvy CTG. Pregúntame sobre productos, pagos o envíos.',
+                'productos':'Tenemos repuestos para celulares, consolas, accesorios y kits de herramientas. ¿Qué buscas?',
+                'pago':'Aceptamos transferencia bancaria, efectivo contra entrega y datafono al recibir.',
+                'envío':'Hacemos envíos a todo Colombia. El costo depende de tu ubicación.',
+                'garantía':'Todos nuestros repuestos tienen garantía de 30 días. Servicios, 15 días.',
+                'default':'No entendí. Prueba con: productos, pago, envío, garantía.'
+            };
+            const chatBot = document.getElementById('chatBot'), chatMensajes = document.getElementById('chatMensajes');
+            document.getElementById('btnBot').addEventListener('click', ()=> chatBot.classList.toggle('activo'));
+            function agregarMensaje(texto, tipo) {
+                const div = document.createElement('div'); div.className = `msg ${tipo}`; div.textContent = texto;
+                chatMensajes.appendChild(div); chatMensajes.scrollTop = 9999;
+            }
+            document.getElementById('btnEnviarChat').addEventListener('click', ()=>{
+                const input = document.getElementById('inputChat');
+                const texto = input.value.trim().toLowerCase();
+                if(!texto) return;
+                agregarMensaje(texto, 'user'); input.value = '';
+                setTimeout(()=>{
+                    let r = respuestas['default'];
+                    for(let k in respuestas) if(texto.includes(k)) { r = respuestas[k]; break; }
+                    agregarMensaje(r, 'bot');
+                }, 500);
+            });
+            agregarMensaje('¡Hola! Soy tu asistente virtual. ¿En qué puedo ayudarte?', 'bot');
+
+            // LOGIN
+            const loginOverlay = document.getElementById('loginOverlay'), contenido = document.getElementById('contenidoPrincipal');
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                if(document.getElementById('usuario').value==='admin' && document.getElementById('contrasena').value==='admin123') {
+                    loginOverlay.classList.add('oculto');
+                    contenido.classList.add('visible');
+                    sessionStorage.setItem('auth','1');
+                } else document.getElementById('loginError').textContent = 'Credenciales incorrectas';
+            });
+            document.getElementById('btnCerrarSesion').addEventListener('click', ()=>{
+                loginOverlay.classList.remove('oculto');
+                contenido.classList.remove('visible');
+                sessionStorage.removeItem('auth');
+            });
+            if(sessionStorage.getItem('auth')) { loginOverlay.classList.add('oculto'); contenido.classList.add('visible'); }
+
+            // MENÚ MÓVIL
+            document.getElementById('btnMenuMovil').onclick = ()=> document.getElementById('navLinks').classList.toggle('movil-activo');
+
+            // INICIAL
+            renderizarProductos('todos');
+            actualizarCarritoUI();
+
+            // Partículas login
+            const part = document.getElementById('loginParticulas');
+            for(let i=0;i<40;i++){ const s=document.createElement('span'); s.style.left=Math.random()*100+'%'; s.style.animationDuration=Math.random()*18+10+'s'; s.style.animationDelay=Math.random()*10+'s'; part.appendChild(s); }
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+/* Capa visual corporativa para la tienda Tech Savvy. */
+:root { --salmon-pink:#1479dd; --bittersweet:#1479dd; --ocean-green:#16a67a; --eerie-black:#122033; --onyx:#1c2a3d; --cultured:#e8eef5; }
+body { background:#f6f8fc; color:#1c2a3d; }
+.header-top { background:#0a1d37; border-bottom:0; }
+.header-social-container .social-link, .header-top-actions select { color:#d5e3f3; }
+.header-main { background:#fff; border-bottom:1px solid #e5ebf2; }
+.header-logo img { filter:drop-shadow(0 4px 7px rgba(17,59,105,.15)); }
+.header-search-container { border-radius:8px; background:#f5f8fc; border:1px solid #e0e8f1; }
+.header-search-container:focus-within { border-color:#1479dd; box-shadow:0 0 0 3px rgba(20,121,221,.1); }
+.search-btn { color:#1479dd; }
+.action-btn { color:#27415f; }.action-btn .count { background:#1479dd; }
+.desktop-navigation-menu { background:#fff; border-bottom:1px solid #e5ebf2; box-shadow:0 4px 14px rgba(21,48,79,.035); }
+.desktop-menu-category-list .menu-title { color:#263d59; font-weight:600; }
+.desktop-menu-category-list .menu-title:hover, .desktop-menu-category-list .menu-title:focus { color:#1479dd; }
+.banner { padding-top:30px; }.banner .container { max-width:1280px; }.slider-item { border-radius:14px; overflow:hidden; box-shadow:0 14px 32px rgba(18,47,82,.12); }.banner-content { background:linear-gradient(90deg,rgba(6,24,47,.72),rgba(6,24,47,.05)); padding:30px; border-radius:10px; }.banner-subtitle { color:#8ddbff; font-weight:700; letter-spacing:1px; }.banner-text,.banner-title { color:#fff!important; text-shadow:0 2px 7px rgba(0,0,0,.28); }.banner-btn { background:#1479dd!important; color:#fff!important; border-radius:7px; font-weight:600; box-shadow:0 7px 16px rgba(20,121,221,.23); }
+.category-item-container,.product-minimal,.product-featured,.product-main { background:#fff; border-radius:12px; border-color:#e4eaf1; box-shadow:0 4px 16px rgba(18,47,82,.04); }.category-item { border-color:#edf1f5; }.category-img-box { background:#f3f7fb; border-radius:9px; }.title { color:#142b48; }.title::before { background:#1479dd; }.showcase { border-color:#edf1f5; }.showcase-title { color:#213954; }.showcase-category { color:#1479dd; }.price { color:#1479dd; }.showcase-badge { background:#1479dd; }.product-grid .showcase { border:1px solid #e8edf3; border-radius:10px; overflow:hidden; transition:.2s; }.product-grid .showcase:hover { transform:translateY(-3px); box-shadow:0 12px 24px rgba(20,56,95,.12); }.service { background:#0a1d37; }.service-title,.service-desc { color:#e4eef9; }
+@media (max-width:570px) { .banner { padding-top:12px; }.banner-content { padding:18px; }.slider-item { border-radius:9px; } }

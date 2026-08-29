@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accesorios para Consolas | Tech Savvy CTG</title>
+    <meta name="description" content="Accesorios para consolas en Tech Savvy CTG, Cartagena. Controles, cargadores y más.">
+    <meta name="keywords" content="repuestos, accesorios, celulares, consolas, computacion, herramientas, tecnologia, Cartagena, Tech Savvy">
+    <meta property="og:title" content="Accesorios para Consolas | Tech Savvy CTG">
+    <meta property="og:description" content="Accesorios para consolas en Tech Savvy CTG, Cartagena. Controles, cargadores y más.">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-contenido">
+            <a href="../index.html" class="logo">
+                <div class="logo-icono">TS</div>
+                <div class="logo-texto">Tech Savvy CTG <span>SAS</span></div>
+            </a>
+            <div class="buscador-header">
+                <input type="text" id="inputBuscador" placeholder="Buscar productos, SKU, categoría...">
+                <div class="buscador-resultados" id="buscadorResultados"></div>
+            </div>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="../ofertas.html">Ofertas</a></li>
+                    <li><a href="../index.html#empresa">Nosotros</a></li>
+                    <li><a href="../index.html#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+            <button class="btn-carrito-header" id="btnAbrirCarrito">🛒 Carrito <span class="badge-carrito" id="badgeCarrito">0</span></button>
+            <button class="menu-movil" id="btnMenuMovil">☰</button>
+        </div>
+    </header>
+    <nav class="breadcrumbs"><a href="../index.html">Inicio</a><span class="sep">/</span><a href="../consolas.html">Consolas</a><span class="sep">/</span><span class="actual">Accesorios</span></nav>
+    <a href="../consolas.html" class="btn-volver">← Volver</a>
+    <section class="hero-interior">
+        <h1>Accesorios · Consolas</h1>
+        <p>Controles, cargadores y más</p>
+    </section>
+    <section class="seccion">
+        
+        <div class="filtros-barra">
+        <div class="filtros-grupo">
+            <label>Ordenar por</label>
+            <select class="select-filtro" id="ordenSelect">
+                <option value="relevantes">Más relevantes</option>
+                <option value="vendidos">Más vendidos</option>
+                <option value="precio-asc">Precio: menor a mayor</option>
+                <option value="precio-desc">Precio: mayor a menor</option>
+                <option value="nuevos">Más nuevos</option>
+            </select>
+        </div>
+        <div class="contador-resultados" id="contadorResultados"></div>
+    </div>
+        <div class="productos-grid" id="productosGrid"></div>
+    </section>
+    <footer class="footer-completo">
+        <div class="footer-grid">
+            <div>
+                <h4>Tech Savvy CTG SAS</h4>
+                <p style="color:var(--gris-claro); font-size:0.85rem;">Repuestos, accesorios, herramientas y kits para celulares, consolas y computación. Cartagena de Indias, Colombia.</p>
+            </div>
+            <div>
+                <h4>Categorías</h4>
+                <ul>
+                    <li><a href="../celulares.html">Celulares</a></li>
+                    <li><a href="../consolas.html">Consolas</a></li>
+                    <li><a href="../computacion.html">Computación</a></li>
+                    <li><a href="../herramientas.html">Herramientas</a></li>
+                    <li><a href="../kits.html">Kits</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Más</h4>
+                <ul>
+                    <li><a href="../electronica.html">Electrónica</a></li>
+                    <li><a href="../energia.html">Energía</a></li>
+                    <li><a href="../limpieza.html">Limpieza</a></li>
+                    <li><a href="../streaming.html">Streaming</a></li>
+                    <li><a href="../ofertas.html">🔥 Ofertas</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="#" id="footerWhatsapp" target="_blank">💬 WhatsApp</a></li>
+                    <li>📍 Cartagena de Indias, Colombia</li>
+                    <li>🕐 Lun–Vie 8:00–18:00 · Sáb 9:00–14:00</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2024–2026 Tech Savvy CTG SAS - Cartagena, Colombia</div>
+    </footer>
+    <!-- CARRITO -->
+    <div class="overlay" id="overlayCarrito"></div>
+    <div class="carrito-panel" id="carritoPanel">
+        <div class="carrito-header"><h3>🛒 Tu Carrito <span id="carritoContadorPanel">0</span></h3><button id="btnCerrarCarrito">✕</button></div>
+        <div class="carrito-items" id="carritoItems"></div>
+        <div class="carrito-footer">
+            <div class="carrito-total"><span>Total:</span> <span id="carritoTotal">$0</span></div>
+            <button class="btn-agregar" id="btnFinalizarCompra" style="background:var(--whatsapp); color:#fff;">💳 Finalizar Compra</button>
+        </div>
+    </div>
+
+    <!-- MODAL PAGO -->
+    <div class="modal-pago" id="modalPago">
+        <div class="modal-contenido">
+            <h3>Selecciona método de pago</h3>
+            <button class="opcion-pago" data-metodo="Transferencia Bancaria">🏦 Transferencia Bancaria</button>
+            <button class="opcion-pago" data-metodo="Efectivo contra entrega">💵 Efectivo contra entrega</button>
+            <button class="opcion-pago" data-metodo="Datafono al recibir">📱 Datafono al recibir</button>
+            <button id="btnCancelarPago" style="background:transparent; border:1px solid #555; color:#aaa; width:100%; padding:10px; border-radius:20px; margin-top:8px;">Cancelar</button>
+        </div>
+    </div>
+    <a href="#" id="whatsappFlotante" class="whatsapp-flotante" target="_blank">💬</a>
+    <script src="../js/data.js"></script>
+    <script src="../js/global.js"></script>
+    <script src="../js/catalogo.js"></script>
+    <script>
+        window.__RAIZ__ = "../";
+        document.getElementById('whatsappFlotante').href = linkWhatsApp('Hola TECH SAVVY, quiero más información sobre sus productos.');
+        document.getElementById('footerWhatsapp').href = linkWhatsApp('Hola TECH SAVVY, quiero más información sobre sus productos.');
+        renderProductosCatalogo({contenedorId:'productosGrid', filtro:{"cat": "consolas", "sub": "accesorios"}, contadorId:'contadorResultados'});
+    </script>
+</body>
+</html>

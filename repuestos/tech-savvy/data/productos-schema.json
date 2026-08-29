@@ -1,0 +1,28 @@
+{
+  "_comentario": "Estructura escalable de producto usada en js/data.js (arreglo PRODUCTOS). Cuando conectes una base de datos o el panel /admin, cada fila/documento debe mapear a este esquema.",
+  "esquema": {
+    "id": "number — identificador único",
+    "sku": "string — código único de producto",
+    "nombre": "string",
+    "cat": "string — categoría principal (celulares, consolas, computacion, herramientas, kits, electronica, energia, limpieza, streaming)",
+    "sub": "string — subcategoría (repuestos, accesorios, kits, herramientas, etc.)",
+    "marca_consola": "string opcional — solo para consolas.repuestos (playstation | xbox | nintendo)",
+    "marca": "string opcional",
+    "modelo": "string opcional",
+    "precio": "number — precio actual en COP",
+    "precioAnterior": "number opcional — si existe y es mayor a precio, el producto se marca automáticamente como oferta",
+    "stock": "number",
+    "img": "string — URL de imagen principal",
+    "prioridad": "boolean opcional — muestra badge 'Más pedido'",
+    "descripcion": "string",
+    "especificaciones": "string[] opcional",
+    "compatibilidad": "string[] opcional",
+    "contenido": "string[] opcional — solo para kits",
+    "tags": "string[] opcional — usado por el buscador global"
+  },
+  "notas": [
+    "Todos los productos actuales están marcados (DEMO) en el nombre — deben reemplazarse antes de producción.",
+    "El campo 'oferta' y 'descuento' se calculan automáticamente en tiempo de carga a partir de precio/precioAnterior, no se deben setear manualmente.",
+    "Para conectar un backend real: reemplazar el arreglo PRODUCTOS en js/data.js por un fetch() a tu API, manteniendo el mismo esquema de campos para no romper catalogo.js ni global.js."
+  ]
+}

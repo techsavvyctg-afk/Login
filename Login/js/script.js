@@ -1,15 +1,1 @@
-const btnSignIn = document.getElementById("sign-in"),
-      btnSignUp = document.getElementById("sign-up"),
-      containerFormRegister = document.querySelector(".register"),
-      containerFormLogin = document.querySelector(".login");
-
-btnSignIn.addEventListener("click", e => {
-    containerFormRegister.classList.add("hide");
-    containerFormLogin.classList.remove("hide")
-})
-
-
-btnSignUp.addEventListener("click", e => {
-    containerFormLogin.classList.add("hide");
-    containerFormRegister.classList.remove("hide")
-})
+const $=(s,scope=document)=>scope.querySelector(s),storageKey='techSavvyUsers';document.querySelectorAll('[data-show]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.form-view').forEach(v=>v.classList.add('is-hidden'));document.getElementById(b.dataset.show).classList.remove('is-hidden')}));document.querySelectorAll('.toggle-password').forEach(b=>b.addEventListener('click',()=>{const i=$('input',b.parentElement);i.type=i.type==='password'?'text':'password';$('i',b).className=i.type==='password'?'bx bx-show':'bx bx-hide'}));function message(f,t,ok=false){const m=$('.form-message',f);m.textContent=t;m.classList.toggle('success',ok)}function users(){return JSON.parse(localStorage.getItem(storageKey)||'[]')}function enter(u,persistent=true){(persistent?localStorage:sessionStorage).setItem('techSavvySession',JSON.stringify({name:u.name,email:u.email}));location.href='dashboard.html'}$('#register-form').addEventListener('submit',e=>{e.preventDefault();const f=e.currentTarget,d=Object.fromEntries(new FormData(f));if(!d.name.trim()||!d.email.trim()||d.password.length<6)return message(f,'Complete los datos y use una contraseña de mínimo 6 caracteres.');const list=users();if(list.some(u=>u.email.toLowerCase()===d.email.toLowerCase()))return message(f,'Este correo ya tiene una cuenta. Inicie sesión.');const u={name:d.name.trim(),email:d.email.trim(),password:d.password};list.push(u);localStorage.setItem(storageKey,JSON.stringify(list));message(f,'Cuenta creada. Redirigiendo al panel…',true);setTimeout(()=>enter(u),500)});$('#login-form').addEventListener('submit',e=>{e.preventDefault();const f=e.currentTarget,d=Object.fromEntries(new FormData(f)),u=users().find(x=>x.email.toLowerCase()===(d.email||'').toLowerCase()&&x.password===d.password);if(!u)return message(f,'Correo o contraseña incorrectos.');message(f,'Acceso verificado. Redirigiendo…',true);setTimeout(()=>enter(u,Boolean(d.remember)),350)});

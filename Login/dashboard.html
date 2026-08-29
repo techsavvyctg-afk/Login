@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"><link rel="stylesheet" href="dashboard.css">
+  <title>Panel empresarial | Tech Savvy CTG</title>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="../index.html"><img src="img/Tech_savvy-removebg-preview.png" alt=""><span>TECH SAVVY<small>CTG SAS · PORTAL</small></span></a>
+      <nav class="nav-menu" aria-label="Navegación principal">
+        <button class="nav-item active" data-section="Resumen"><i class='bx bxs-grid-alt'></i>Resumen</button>
+        <button class="nav-item" data-section="Órdenes"><i class='bx bx-receipt'></i>Órdenes <b>12</b></button>
+        <button class="nav-item" data-section="Inventario"><i class='bx bx-package'></i>Inventario</button>
+        <button class="nav-item" data-section="Clientes"><i class='bx bx-group'></i>Clientes</button>
+        <button class="nav-item" data-section="Soporte técnico"><i class='bx bx-wrench'></i>Soporte técnico</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="help"><i class='bx bx-message-dots'></i><span><b>¿Necesita ayuda?</b><small>Soporte Tech Savvy</small></span></div><button id="logout" class="logout"><i class='bx bx-log-out'></i>Cerrar sesión</button></div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar"><button class="menu-toggle" aria-label="Abrir menú"><i class='bx bx-menu'></i></button><div class="search"><i class='bx bx-search'></i><input type="search" placeholder="Buscar orden, cliente o producto"><kbd>⌘ K</kbd></div><div class="top-actions"><button class="icon-button" aria-label="Notificaciones"><i class='bx bx-bell'></i><span></span></button><div class="profile"><div class="avatar" id="avatar">TS</div><div><b id="profile-name">Administrador</b><small>Cuenta empresarial</small></div><i class='bx bx-chevron-down'></i></div></div></header>
+      <section class="content">
+        <div class="page-heading"><div><p class="breadcrumb">PORTAL / <span id="section-name">RESUMEN</span></p><h1>Buenos días, <span id="welcome-name">Administrador</span></h1><p class="subheading">Aquí tiene una visión general de la operación de hoy.</p></div><button class="new-order" id="new-order"><i class='bx bx-plus'></i> Nueva orden</button></div>
+        <section class="metrics" aria-label="Indicadores principales">
+          <article class="metric-card"><span class="metric-icon blue"><i class='bx bx-wallet'></i></span><div><p>Ventas del mes</p><h2>$ 8.450.000</h2><small class="up"><i class='bx bx-trending-up'></i> 12,5% <em>vs. mes anterior</em></small></div></article>
+          <article class="metric-card"><span class="metric-icon purple"><i class='bx bx-receipt'></i></span><div><p>Órdenes activas</p><h2>24</h2><small class="up"><i class='bx bx-up-arrow-alt'></i> 8 nuevas <em>esta semana</em></small></div></article>
+          <article class="metric-card"><span class="metric-icon orange"><i class='bx bx-time-five'></i></span><div><p>Servicios pendientes</p><h2>7</h2><small class="warning"><i class='bx bx-error-circle'></i> 3 <em>requieren atención</em></small></div></article>
+          <article class="metric-card"><span class="metric-icon green"><i class='bx bx-user-check'></i></span><div><p>Clientes atendidos</p><h2>148</h2><small class="up"><i class='bx bx-trending-up'></i> 18,2% <em>este mes</em></small></div></article>
+        </section>
+        <section class="dashboard-grid">
+          <article class="panel performance"><div class="panel-head"><div><h2>Rendimiento de ventas</h2><p>Ingresos de los últimos 6 meses</p></div><button class="period">Últimos 6 meses <i class='bx bx-chevron-down'></i></button></div><div class="chart"><div class="y-axis"><span>$10M</span><span>$7,5M</span><span>$5M</span><span>$2,5M</span><span>$0</span></div><div class="plot"><i style="height:65%"></i><i style="height:52%"></i><i style="height:78%"></i><i style="height:61%"></i><i style="height:88%"></i><i style="height:73%"></i><div class="months"><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span><span>Jul</span><span>Ago</span></div></div></div></article>
+          <article class="panel quick"><div class="panel-head"><div><h2>Acciones rápidas</h2><p>Atajos de gestión diaria</p></div></div><button data-toast="Nueva orden creada"><i class='bx bx-receipt'></i><span><b>Crear orden</b><small>Registrar servicio o venta</small></span><i class='bx bx-right-arrow-alt'></i></button><a href="../../repuestos/index.html"><i class='bx bx-package'></i><span><b>Ver inventario</b><small>Repuestos y disponibilidad</small></span><i class='bx bx-right-arrow-alt'></i></a><a href="../../Techsavvy/index.html"><i class='bx bx-store'></i><span><b>Ir a tienda online</b><small>Catálogo público</small></span><i class='bx bx-right-arrow-alt'></i></a></article>
+        </section>
+        <section class="panel orders"><div class="panel-head"><div><h2>Órdenes recientes</h2><p>Seguimiento de servicios y pedidos</p></div><button class="view-all" data-toast="Mostrando todas las órdenes">Ver todas <i class='bx bx-right-arrow-alt'></i></button></div><div class="table-wrap"><table><thead><tr><th>ORDEN</th><th>CLIENTE</th><th>SERVICIO</th><th>ESTADO</th><th>VALOR</th><th></th></tr></thead><tbody><tr><td><b>#TS-1048</b><small>Hoy, 10:42</small></td><td>María González</td><td>Mantenimiento portátil</td><td><span class="status process">En proceso</span></td><td><b>$ 180.000</b></td><td><button class="row-action" data-toast="Detalle de orden #TS-1048"><i class='bx bx-dots-horizontal-rounded'></i></button></td></tr><tr><td><b>#TS-1047</b><small>Hoy, 09:18</small></td><td>Andrés Pineda</td><td>Reparación de consola</td><td><span class="status ready">Listo para entrega</span></td><td><b>$ 245.000</b></td><td><button class="row-action" data-toast="Detalle de orden #TS-1047"><i class='bx bx-dots-horizontal-rounded'></i></button></td></tr><tr><td><b>#TS-1046</b><small>Ayer, 16:30</small></td><td>Comercial Caribe SAS</td><td>Venta de componentes</td><td><span class="status completed">Completado</span></td><td><b>$ 1.280.000</b></td><td><button class="row-action" data-toast="Detalle de orden #TS-1046"><i class='bx bx-dots-horizontal-rounded'></i></button></td></tr></tbody></table></div></section>
+      </section>
+    </main>
+  </div><div class="toast" id="toast"><i class='bx bx-check-circle'></i><span></span></div><script src="js/dashboard.js"></script>
+</body></html>
